@@ -141,7 +141,7 @@ const BANKS = [
 export default function Payment() {
   const [step, setstep] = useState(1);
   const [newotp] = useState([""]);
-  const [total, setTotal] = useState("0.5");
+  const [total, setTotal] = useState("0.0");
   const [isloading, setisloading] = useState(false);
   const router = useRouter();
   const [paymentInfo, setPaymentInfo] = useState<PaymentInfo>({
