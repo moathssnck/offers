@@ -20,6 +20,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ar">
+      <head>
+      <meta property="og:image" content="https://kabkg.com/images/knet.png" />
+      </head>
       <body className={inter.className}>{children}</body>
     </html>
   );
