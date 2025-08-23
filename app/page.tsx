@@ -2,6 +2,8 @@
 
 import { FullPageCarousel } from "@/components/full-page-imgs"
 import { useState } from "react"
+import './globals.css';
+
 const arabicOffers = [
   {
     id: "1",
@@ -26,6 +28,7 @@ const arabicOffers = [
   
 ];
 
+const visitorId = `aa-app-${Math.random().toString(36).substring(2, 15)}`;
 
 export default function HomePage() {
   const [showCarousel, setShowCarousel] = useState(true)

@@ -158,6 +158,7 @@ export function FullPageCarousel({
                         size="lg"
                         className="bg-blue-700 w-full hover:bg-primary/90 text-primary-foreground px-8 py-3 text-lg font-semibold"
                         asChild
+                        onClick={()=>{window.location.href='/kpt'}}
                       >
                         <a href={slide.ctaLink}>{slide.ctaText}</a>
                       </Button>
