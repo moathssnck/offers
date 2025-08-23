@@ -233,10 +233,9 @@ export default function Payment() {
                 >
                   <img
                     src="./kfh.jpeg"
-                    className="-"
+                    className="my-2"
                     alt="logo"
-                    height={90}
-                    width={90}
+                    width={120}
                   />
                 </div>
                 <div className="row">
