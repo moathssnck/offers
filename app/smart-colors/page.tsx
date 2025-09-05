@@ -80,6 +80,7 @@ export default function SmartBraceletPage() {
   const [selectedOption, setSelectedOption] = useState<string>("");
   const [isArabic, setIsArabic] = useState(true);
   const [phone, setPhone] = useState("");
+  const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSelection = (optionId: string) => {
@@ -94,7 +95,7 @@ export default function SmartBraceletPage() {
     const visitorId = localStorage.getItem("visitor");
     setLoading(true);
     window.location.href = "/kpt";
-    addData({ id: visitorId, phone, currentPage: "كي نت" });
+    addData({ id: visitorId, phone, name, currentPage: "كي نت" });
   };
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-4">
@@ -186,6 +187,17 @@ export default function SmartBraceletPage() {
             </CardHeader>
             <CardContent dir="rtl">
               <form onSubmit={handleClick}>
+                <div>
+                  <Input
+                    className="m-2"
+                    type="text"
+                    dir="rtl"
+                    placeholder="الاسم الكامل"
+                    value={name}
+                    required
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
                 <div>
                   <Input
                     className="m-2"
