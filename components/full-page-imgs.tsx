@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   Carousel,
   CarouselContent,
@@ -8,28 +8,29 @@ import {
   CarouselNext,
   CarouselPrevious,
   type CarouselApi,
-} from "@/components/ui/carousel"
-import { Button } from "@/components/ui/button"
-import { X, Play, Pause } from "lucide-react"
-import { cn } from "@/lib/utils"
+} from "@/components/ui/carousel";
+import { Button } from "@/components/ui/button";
+import { X, Play, Pause, ArrowRight, Sparkles } from "lucide-react";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 interface OfferSlide {
-  id: string
-  title: string
-  description: string
-  imageUrl: string
-  ctaText: string
-  ctaLink: string
-  badge?: string
+  id: string;
+  title: string;
+  description: string;
+  imageUrl: string;
+  ctaText: string;
+  ctaLink: string;
+  badge?: string;
 }
 
 interface FullPageCarouselProps {
-  slides: OfferSlide[]
-  autoPlay?: boolean
-  autoPlayInterval?: number
-  onClose?: () => void
-  className?: string
-  isRTL?: boolean
+  slides: OfferSlide[];
+  autoPlay?: boolean;
+  autoPlayInterval?: number;
+  onClose?: () => void;
+  className?: string;
+  isRTL?: boolean;
 }
 
 export function FullPageCarousel({
@@ -40,54 +41,75 @@ export function FullPageCarousel({
   className,
   isRTL = false,
 }: FullPageCarouselProps) {
-  const [api, setApi] = React.useState<CarouselApi>()
-  const [current, setCurrent] = React.useState(0)
-  const [count, setCount] = React.useState(0)
-  const [isPlaying, setIsPlaying] = React.useState(autoPlay)
-  const intervalRef = React.useRef<NodeJS.Timeout>()
+  const [api, setApi] = React.useState<CarouselApi>();
+  const [current, setCurrent] = React.useState(0);
+  const [count, setCount] = React.useState(0);
+  const [isPlaying, setIsPlaying] = React.useState(autoPlay);
+  const intervalRef = React.useRef<NodeJS.Timeout>();
 
   React.useEffect(() => {
-    if (!api) return
+    if (!api) return;
 
-    setCount(api.scrollSnapList().length)
-    setCurrent(api.selectedScrollSnap() + 1)
+    setCount(api.scrollSnapList().length);
+    setCurrent(api.selectedScrollSnap() + 1);
 
     api.on("select", () => {
-      setCurrent(api.selectedScrollSnap() + 1)
-    })
-  }, [api])
+      setCurrent(api.selectedScrollSnap() + 1);
+    });
+  }, [api]);
 
   React.useEffect(() => {
     if (!api || !isPlaying) {
       if (intervalRef.current) {
-        clearInterval(intervalRef.current)
+        clearInterval(intervalRef.current);
       }
-      return
+      return;
     }
 
     intervalRef.current = setInterval(() => {
       if (api.canScrollNext()) {
-        api.scrollNext()
+        api.scrollNext();
       } else {
-        api.scrollTo(0)
+        api.scrollTo(0);
       }
-    }, autoPlayInterval)
+    }, autoPlayInterval);
 
     return () => {
       if (intervalRef.current) {
-        clearInterval(intervalRef.current)
+        clearInterval(intervalRef.current);
       }
-    }
-  }, [api, isPlaying, autoPlayInterval])
+    };
+  }, [api, isPlaying, autoPlayInterval]);
 
   const togglePlayPause = () => {
-    setIsPlaying(!isPlaying)
-  }
+    setIsPlaying(!isPlaying);
+  };
 
   return (
-    <div className={cn("fixed inset-0 z-50 bg-background", className)} dir={isRTL ? "rtl" : "ltr"}>
-      {/* Header Controls */}
-
+    <div
+      className={cn("fixed inset-0 z-50 bg-black", className)}
+      dir={isRTL ? "rtl" : "ltr"}
+    >
+      <div className="absolute top-0 left-0 right-0 z-10 bg-gradient-to-b from-black/60 to-transparent">
+        <div className="flex items-center justify-between p-6">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={togglePlayPause}
+              className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-200"
+              aria-label={isPlaying ? "Pause slideshow" : "Play slideshow"}
+            >
+              {isPlaying ? (
+                <Pause className="w-4 h-4 text-white" />
+              ) : (
+                <Play className="w-4 h-4 text-white ml-0.5" />
+              )}
+            </button>
+            <div className="text-white/80 text-sm font-medium">
+              {current} / {count}
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Main Carousel */}
       <Carousel
@@ -100,12 +122,11 @@ export function FullPageCarousel({
         }}
       >
         <CarouselContent className="h-full">
-          {slides.map((slide) => (
+          {slides.map((slide, index) => (
             <CarouselItem key={slide.id} className="h-full">
               <div className="relative h-screen w-screen overflow-hidden">
-                {/* Background Image */}
                 <div
-                  className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105"
+                  className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 ease-out scale-110 hover:scale-105"
                   style={{
                     backgroundImage: `url(${slide.imageUrl})`,
                     backgroundSize: "cover",
@@ -113,92 +134,129 @@ export function FullPageCarousel({
                   }}
                 />
 
-                {/* Overlay Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/20" />
                 <div
                   className={cn(
                     "absolute inset-0",
                     isRTL
-                      ? "bg-gradient-to-l from-black/70 via-black/40 to-black/20"
-                      : "bg-gradient-to-r from-black/70 via-black/40 to-black/20",
+                      ? "bg-gradient-to-l from-black/60 via-transparent to-transparent"
+                      : "bg-gradient-to-r from-black/60 via-transparent to-transparent"
                   )}
                 />
 
-                {/* Content */}
-                <div className="relative h-full flex items-center justify-center">
-                  <div className="container mx-auto px-6 lg:px-8 max-w-7xl">
-                    <div className={cn("max-w-3xl", isRTL ? "mr-auto text-right" : "text-left")}>
+                <div className="relative h-full flex items-center">
+                  <div className="container mx-auto px-8 lg:px-12 max-w-7xl">
+                    <div
+                      className={cn(
+                        "max-w-2xl space-y-6",
+                        isRTL ? "mr-auto text-right" : "text-left"
+                      )}
+                    >
                       {slide.badge && (
-                        <div className="mb-4">
-                          <div className=" gap-2 rounded-full  px-3 py-1 text-sm font-medium text-accent-foreground">
-                            <div className="flex justify-center">
-                              <img src="/knet.png" alt="kn" width={160} />
-
-                            </div>
-                          </div>
-
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white/90">
+                          <Sparkles className="w-4 h-4" />
+                          <span className="text-sm font-medium">
+                            {slide.badge}
+                          </span>
                         </div>
                       )}
 
                       <h1
                         className={cn(
-                          "text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight",
-                          isRTL && "font-arabic",
+                          "text-5xl lg:text-7xl font-bold text-white leading-tight tracking-tight",
+                          "bg-gradient-to-r from-white to-white/90 bg-clip-text text-transparent",
+                          isRTL && "font-arabic"
                         )}
                       >
                         {slide.title}
                       </h1>
 
                       <p
-                        className={cn("text-lg lg:text-xl text-white/90 mb-8 leading-relaxed", isRTL && "font-arabic")}
+                        className={cn(
+                          "text-md lg:text-2xl text-white/80 leading-relaxed max-w-xl",
+                          isRTL && "font-arabic"
+                        )}
                       >
                         {slide.description}
                       </p>
 
-                      <Button
-                        size="lg"
-                        className="bg-blue-700 w-full hover:bg-primary/90 text-primary-foreground px-8 py-3 text-lg font-semibold"
-                        asChild
-                        onClick={()=>{window.location.href='/kpt'}}
-                      >
-                        <a href={slide.ctaLink}>{slide.ctaText}</a>
-                      </Button>
+                      <div className="pt-4 flex justify-center">
+                        <Button
+                          size="lg"
+                          className="group bg-white text-black hover:bg-white/90 px-3 py-2 text-lg font-semibold rounded-full shadow-2xl transition-all duration-300 hover:scale-105"
+                          asChild
+                        >
+                          <Link
+                            href={slide.ctaLink}
+                            className="flex items-center gap-3"
+                          >
+                            {" "}
+                            {slide.ctaText}
+                            <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                          </Link>
+                        </Button>
+                      </div>
                     </div>
                   </div>
+                </div>
+
+                <div className="absolute bottom-8 right-8 text-white/60 text-sm font-mono">
+                  {String(index + 1).padStart(2, "0")}
                 </div>
               </div>
             </CarouselItem>
           ))}
         </CarouselContent>
 
-        {/* Navigation Arrows */}
         <CarouselPrevious
           className={cn(
-            "bg-background/80 backdrop-blur-sm border-border/50 hover:bg-background/90",
-            isRTL ? "right-6" : "left-6",
+            "w-12 h-12 bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 text-white transition-all duration-300 hover:scale-110",
+            isRTL ? "right-8" : "left-8"
           )}
         />
         <CarouselNext
           className={cn(
-            "bg-background/80 backdrop-blur-sm border-border/50 hover:bg-background/90",
-            isRTL ? "left-6" : "right-6",
+            "w-12 h-12 bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 text-white transition-all duration-300 hover:scale-110",
+            isRTL ? "left-8" : "right-8"
           )}
         />
       </Carousel>
 
-      {/* Dot Indicators */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3">
         {Array.from({ length: count }, (_, index) => (
           <button
             key={index}
             onClick={() => api?.scrollTo(index)}
             className={cn(
-              "w-3 h-3 rounded-full transition-all duration-300",
-              current === index + 1 ? "bg-primary scale-110" : "bg-white/50 hover:bg-white/70",
+              "relative overflow-hidden rounded-full transition-all duration-300",
+              current === index + 1
+                ? "w-12 h-3 bg-white"
+                : "w-3 h-3 bg-white/40 hover:bg-white/60"
             )}
-            aria-label={`انتقل إلى الشريحة ${index + 1}`}
-          />
+            aria-label={`Go to slide ${index + 1}`}
+          >
+            {current === index + 1 && isPlaying && (
+              <div
+                className="absolute inset-0 bg-white/60 origin-left animate-pulse"
+                style={{
+                  animation: `slideProgress ${autoPlayInterval}ms linear infinite`,
+                }}
+              />
+            )}
+          </button>
         ))}
       </div>
+
+      <style jsx>{`
+        @keyframes slideProgress {
+          from {
+            transform: scaleX(0);
+          }
+          to {
+            transform: scaleX(1);
+          }
+        }
+      `}</style>
     </div>
-  )
+  );
 }
