@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import "./resposive.css";
 
 export const metadata: Metadata = {
   title: " السوار الذكي رفيقك المثالي",
