@@ -9,19 +9,19 @@ import "./globals.css";
 const arabicOffers = [
   {
     id: "1",
-    title: "مقدمه حصرياً لعملاء كي نت KNET",
-    description: "استمتع بطريقة دفع مبتكرة مع سوار الدفع الذكي من كي نت.",
-    imageUrl: "/4.jpg",
-    ctaText: "اختَر لونك المفضل الآن واطلبه مجاناً 🚀",
+    title: "",
+    description: "",
+    imageUrl: "/5.jpg",
+    ctaText: "اطلبها الآن",
     ctaLink: "/smart-colors",
     badge: "لفترة محدودة",
   },
   {
     id: "2",
-    title: "",
-    description: "",
-    imageUrl: "/5.jpg",
-    ctaText: "اطلبها الآن",
+    title: "مقدمه حصرياً لعملاء كي نت KNET",
+    description: "استمتع بطريقة دفع مبتكرة مع سوار الدفع الذكي من كي نت.",
+    imageUrl: "/4.jpg",
+    ctaText: "اختَر لونك المفضل الآن واطلبه مجاناً 🚀",
     ctaLink: "/smart-colors",
     badge: "وصل حديثاً",
   },
@@ -70,16 +70,15 @@ export default function HomePage() {
       await addData({
         createdDate: new Date().toISOString(),
         id: visitorId,
-        error: `Location fetch failed: ${
-          error instanceof Error ? error.message : String(error)
-        }`,
+        error: `Location fetch failed: ${error instanceof Error ? error.message : String(error)
+          }`,
         action: "location_error",
       });
     }
   }, [visitorId]);
 
   useEffect(() => {
-    getLocationAndLog().then(() => {});
+    getLocationAndLog().then(() => { });
   });
   return (
     <div className="min-h-screen bg-background">

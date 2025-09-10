@@ -183,7 +183,7 @@ export function FullPageCarousel({
                       <div className="pt-4 flex justify-center">
                         <Button
                           size="lg"
-                          className="group bg-white text-black hover:bg-white/90 px-3 py-2 text-lg font-semibold rounded-full shadow-2xl transition-all duration-300 hover:scale-105"
+                          className="group bg-gradient-to-r from-blue-500 to-orange-500  text-white hover:bg-white/90 px-3 py-2 text-lg font-semibold rounded-full shadow-2xl transition-all duration-300 hover:scale-105"
                           asChild
                         >
                           <Link
